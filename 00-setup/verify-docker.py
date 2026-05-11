@@ -88,10 +88,13 @@ def main() -> int:
     print(f"Docker:        {'OK' if docker_ok else 'FAIL'}  ({docker_ver})")
     print(f"Compose v2:    {'OK' if compose_ok else 'FAIL'}  ({compose_ver})")
     print(f"RAM available: {ram_gb} GB ({'OK' if ram_ok else f'NEED >= {MIN_RAM_GB} GB'})")
-    print(f"Ports free:    {'OK' if not bound_ports else f'BOUND: {bound_ports}'}")
+    # Warn on bound ports, but don't fail — the stack may already be running.
+    print(f"Ports free:    {'OK' if not bound_ports else f'WARNING: already bound — stack may already be running: {bound_ports}'}")
+    if bound_ports:
+        print("  (You can ignore this warning if the stack is already up via 'docker ps')")
     print(f"Report written: {REPORT_PATH}")
 
-    return 0 if (docker_ok and compose_ok and ram_ok and not bound_ports) else 1
+    return 0 if (docker_ok and compose_ok and ram_ok) else 1
 
 
 if __name__ == "__main__":

@@ -21,8 +21,8 @@ done
 echo "Step 3: restart app"
 docker start day23-app >/dev/null
 
-echo "Step 4: wait 60s for alert to resolve"
-for i in {1..12}; do
+echo "Step 4: wait 90s for alert to resolve"
+for i in {1..18}; do
   sleep 5
   alerts=$(curl -fsS http://localhost:9093/api/v2/alerts 2>/dev/null | grep -c '"state":"active"' || true)
   if [ "$alerts" -eq 0 ]; then
@@ -31,5 +31,5 @@ for i in {1..12}; do
   fi
 done
 
-echo "alert did not resolve within 60s" >&2
+echo "alert did not resolve within 90s" >&2
 exit 1

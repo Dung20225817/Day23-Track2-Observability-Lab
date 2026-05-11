@@ -23,9 +23,9 @@ processors:
     send_batch_size: 1024
     timeout: 5s
 
-  # Composite tail-sampling: keep all errors + slow + 1% healthy
+  # Composite tail-sampling: keep all errors + slow + 30% healthy
   tail_sampling:
-    decision_wait: 30s
+    decision_wait: 10s
     num_traces: 50000
     expected_new_traces_per_sec: 100
     policies:
@@ -35,9 +35,9 @@ processors:
       - name: keep-slow
         type: latency
         latency: { threshold_ms: 2000 }
-      - name: probabilistic-1pct
+      - name: probabilistic-30pct
         type: probabilistic
-        probabilistic: { sampling_percentage: 1 }
+        probabilistic: { sampling_percentage: 30 }
 
   # Add deployment env to every span/metric resource attribute
   resource:

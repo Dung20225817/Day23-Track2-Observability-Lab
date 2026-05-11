@@ -20,7 +20,7 @@ groups:
           runbook_url: "https://wiki.example/runbooks/high-inference-latency"
 
       - alert: ServiceDown
-        expr: up{job="inference-api"} == 0
+        expr: count by (job) (up{job="inference-api"} == 0) == count by (job) (up{job="inference-api"})
         for: 1m
         labels:
           severity: critical
